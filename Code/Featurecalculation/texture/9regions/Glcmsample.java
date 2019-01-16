@@ -1,0 +1,128 @@
+package textreg;
+import java.io.*;
+import java.util.StringTokenizer;
+public class Glcmsample
+{
+public double[] calGlcm(String s)throws Exception
+	{
+	BufferedReader br;
+int i=0,j=0,p=0,q=0,n,m,temp,temp1;
+double ff[];
+ff=new double[5];
+	PrintStream ps=new PrintStream("glcm.txt");
+try{
+	FileReader f=new FileReader(s);
+	br=new BufferedReader(f);
+StringTokenizer st;
+	int a[][],g[][],zero[][],four5[][],nine[][],oneth5[][],trans[][];
+	double gl[][];
+	gl=new double[20][20];
+	a=new int[600][600];
+	zero=new int[20][20];
+	four5=new int[20][20];
+nine=new int[20][20];
+	oneth5=new int[20][20];
+g=new int[20][20];
+trans=new int[20][20];
+String line;
+while((line=br.readLine())!=null)
+	{
+	j=0;
+	st=new StringTokenizer(line," ");
+	while(st.hasMoreTokens())
+		{
+		String str=st.nextToken();
+		a[i][j]=Integer.parseInt(str);
+		j++;
+		}
+		i++;
+	}
+	n=i;m=j;int sum=0;
+	for(p=0;p<16;p++)
+	{
+		for(q=0;q<16;q++)
+		{
+			int zerocount=0,f5count=0,ninecount=0,oneth5count=0;
+			temp=p;temp1=q;
+			for(i=0;i<n;i++)
+			{
+				for(j=0;j<m;j++)
+				{
+				
+					if((a[i][j]==temp)&&(a[i][j+1]==temp1))
+						zerocount++;
+				}
+			}
+			zero[p][q]=zerocount;
+			for(i=1;i<n;i++)
+			{
+				for(j=0;j<m;j++)
+				{
+			if((a[i][j]==temp)&&(a[i-1][j+1]==temp1))
+					f5count++;
+				}
+			}
+				four5[p][q]=f5count;
+	for(i=1;i<n;i++)
+			{
+				for(j=0;j<m;j++)
+				{
+				if((a[i][j]==temp)&&(a[i-1][j]==temp1))
+						ninecount++;
+				}
+			}
+				
+			nine[p][q]=ninecount;
+for(i=1;i<n;i++)
+			{
+				for(j=1;j<m;j++)
+				{
+					if((a[i][j]==temp)&&(a[i-1][j-1]==temp1))
+						oneth5count++;
+				}
+			}
+			oneth5[p][q]=oneth5count;
+	}
+	}
+	//System.out.println("sum:"+sum);
+	for(p=0;p<16;p++)
+	{
+		for(q=0;q<16;q++)
+		{
+	g[p][q]=zero[p][q]+four5[p][q]+nine[p][q]+oneth5[p][q];
+	g[p][q]=(g[p][q]/4);
+	trans[q][p]=g[p][q];
+	}
+	}
+	for(p=0;p<16;p++)
+	{
+		for(q=0;q<16;q++)
+		{
+			g[p][q]+=trans[p][q];
+			sum+=g[p][q];
+		}
+	}
+	for(p=0;p<16;p++)
+	{
+		for(q=0;q<16;q++)
+		{
+			gl[p][q]=(double)(g[p][q])/sum;
+		ps.print(gl[p][q]+"\t");
+		}
+		ps.println();
+	}
+	System.out.println();
+	//System.out.println("GLCM matrix formed");
+	Features fea=new Features();
+	//System.out.println("Calculating features");
+ff=fea.getFeature(gl);
+	
+	
+
+}
+catch(Exception e)
+{
+}
+return ff;
+}
+}

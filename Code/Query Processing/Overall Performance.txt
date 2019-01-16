@@ -1,0 +1,12 @@
+Color Moments:
+  Global 0.61
+   6Regions 0.62
+   9Regions 0.75
+Texture:
+  Global 0.17
+   6Regions 0.34
+   9Regions 0.41
+Combining the features:
+  Global 0.64
+   6Regions 0.66
+   9Regions 0.77
